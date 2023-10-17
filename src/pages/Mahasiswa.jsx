@@ -1,16 +1,69 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 function Mahasiswa() {
+  const [mhs, setMhs] = useState([]);
+  const url = "http://127.0.0.1:1908/static/";
+  const fetchData = async () => {
+    try {
+      const getData = await axios.get("http://127.0.0.1:1908/api/mhs");
+      console.log(getData.data);
+      setMhs(getData.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
-      <div className="hero min-h-screen bg-base-200">
-        <div className="hero-content text-center">
-          <div className="max-w-md">
-            <h1 className="text-5xl font-bold">Data Mahasiswa</h1>
-            <p className="py-6">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
-            </p>
-            <button className="btn btn-primary">Get Started</button>
+      <div className="w-full h-screen flex justify-center items-center bg-base-200">
+        <div className="w-4/5 flex justify-center">
+          <div className="overflow-x-auto w-[90%]">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr className="text-center">
+                  <th>No</th>
+                  <th>Foto</th>
+                  <th>NRP</th>
+                  <th>Name</th>
+                  <th>Jurusan</th>
+                  <th>Foto KTM</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mhs.map((mh, idx) => (
+                  <tr>
+                    <td>{idx + 1}</td>
+                    <td>
+                      <div className="flex items-center space-x-3">
+                        <div className="avatar">
+                          <div className="mask mask-squircle w-12 h-12">
+                            <img
+                              src={url + mh.foto}
+                              alt="Avatar Tailwind CSS Component"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{mh.nrp}</td>
+                    <td>{mh.nama}</td>
+                    <td>{mh.nama_jurusan}</td>
+                    <td>
+                      <div className="card w-96 bg-base-100 shadow-xl image-full">
+                        <figure>
+                          <img src={url + mh.foto_ktm} alt="Shoes" />
+                        </figure>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
