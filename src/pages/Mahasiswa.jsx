@@ -20,7 +20,8 @@ function Mahasiswa() {
   return (
     <>
       <div className="w-full h-screen flex justify-center items-center bg-base-200">
-        <div className="w-4/5 flex justify-center">
+        <div className="w-4/5 flex flex-col justify-center gap-5">
+          <h1 class="text-5xl font-bold text-center">Data Mahasiswa</h1>
           <div className="overflow-x-auto w-[90%]">
             <table className="table">
               {/* head */}
