@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Mahasiswa() {
   const [mhs, setMhs] = useState([]);
@@ -20,8 +21,13 @@ function Mahasiswa() {
   return (
     <>
       <div className="w-full h-screen flex justify-center items-center bg-base-200">
-        <div className="w-4/5 flex flex-col justify-center gap-5">
+        <div className="w-4/5 flex flex-col justify-center items-center gap-5">
           <h1 class="text-5xl font-bold text-center">Data Mahasiswa</h1>
+          <div className="w-[90%] flex px-10 justify-end">
+            <Link to={"create"} className="btn btn-accent">
+              Create
+            </Link>
+          </div>
           <div className="overflow-x-auto w-[90%]">
             <table className="table">
               {/* head */}
@@ -55,9 +61,9 @@ function Mahasiswa() {
                     <td>{mh.nama}</td>
                     <td>{mh.nama_jurusan}</td>
                     <td>
-                      <div className="card w-96 bg-base-100 shadow-xl image-full">
+                      <div className="card w-96 bg-base-100 shadow-xl">
                         <figure>
-                          <img src={url + mh.foto_ktm} alt="Shoes" />
+                          <img src={url + mh.foto_ktm} />
                         </figure>
                       </div>
                     </td>
