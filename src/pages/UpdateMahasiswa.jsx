@@ -1,37 +1,53 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function CreateMahasiswa() {
+export default function UpdateMahasiswa() {
+  const [mhs, setMhs] = useState({
+    id_mahasiswa: null,
+    nama: "",
+    nrp: "",
+    id_jurusan: "",
+  });
   const [dataJurusan, setDataJurusan] = useState([]);
-  const [nama, setNama] = useState("");
-  const [nrp, setNrp] = useState("");
-  const [jurusan, setJurusan] = useState("");
-  const [foto, setFoto] = useState("");
-  const [fotoKtm, setFotoKtm] = useState("");
+  const handleEditDataChange = (field, value) => {
+    setMhs((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
       const getData = await axios.get("http://127.0.0.1:1908/api/jurusan");
+      const getMhs = await axios.get(`http://127.0.0.1:1908/api/mhs/${id}`);
       console.log(getData.data);
+      console.log(getMhs.data.payload);
+      setMhs(getMhs.data.payload);
       setDataJurusan(getData.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const createData = async (e) => {
+  const updateData = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("nama", nama);
-    formData.append("nrp", nrp);
-    formData.append("jurusan", jurusan);
-    formData.append("foto", foto);
-    formData.append("foto_ktm", fotoKtm);
+    formData.append("nama", mhs.nama);
+    formData.append("nrp", mhs.nrp);
+    formData.append("jurusan", mhs.id_jurusan);
+
+    if (mhs.foto) {
+      formData.append("foto", mhs.foto);
+    }
+    if (mhs.foto_ktm) {
+      formData.append("foto_ktm", mhs.foto_ktm);
+    }
     try {
-      const createData = await axios.post(
-        "http://127.0.0.1:1908/api/mhs/store",
+      const updateData = await axios.patch(
+        `http://127.0.0.1:1908/api/mhs/update/${id}`,
         formData,
         {
           headers: {
@@ -39,10 +55,10 @@ export default function CreateMahasiswa() {
           },
         }
       );
-      console.log(createData);
+      console.log(updateData);
       navigate("/mhs");
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   };
 
@@ -54,7 +70,7 @@ export default function CreateMahasiswa() {
       <div className="w-full px-10 py-5 flex justify-center items-center">
         <form
           className="w-[4/5] flex flex-col gap-5 items-center"
-          onSubmit={createData}
+          onSubmit={updateData}
         >
           <div className="form-control w-full max-w-xs">
             <label className="label">
@@ -64,8 +80,9 @@ export default function CreateMahasiswa() {
               type="text"
               placeholder="Type here"
               className="input input-bordered w-full max-w-xs"
+              defaultValue={mhs ? mhs.nrp : ""}
               onChange={(e) => {
-                setNrp(e.target.value);
+                handleEditDataChange("nrp", e.target.value);
               }}
             />
           </div>
@@ -77,8 +94,9 @@ export default function CreateMahasiswa() {
               type="text"
               placeholder="Type here"
               className="input input-bordered w-full max-w-xs"
+              defaultValue={mhs ? mhs.nama : ""}
               onChange={(e) => {
-                setNama(e.target.value);
+                handleEditDataChange("nama", e.target.value);
               }}
             />
           </div>
@@ -88,14 +106,19 @@ export default function CreateMahasiswa() {
             </label>
             <select
               className="select select-primary w-full max-w-xs"
+              defaultValue={mhs ? mhs.id_jurusan : ""}
               onChange={(e) => {
-                setJurusan(e.target.value);
+                handleEditDataChange("id_jurusan", e.target.value);
               }}
             >
               <option value={""}>Jurusan</option>
               {dataJurusan.map((jur, idx) => {
                 return (
-                  <option key={idx} value={jur.id_j}>
+                  <option
+                    key={idx}
+                    value={jur.id_j}
+                    selected={mhs.id_jurusan === jur.id_j ? true : false}
+                  >
                     {jur.nama_jurusan}
                   </option>
                 );
@@ -118,7 +141,7 @@ export default function CreateMahasiswa() {
                     hover:file:bg-blue-600"
                 accept="image/*"
                 onChange={(e) => {
-                  setFoto(e.target.files[0]);
+                  handleEditDataChange("foto", e.target.files[0]);
                 }}
               />
             </label>
@@ -138,7 +161,7 @@ export default function CreateMahasiswa() {
                     file:bg-red-500 file:text-white
                     hover:file:bg-red-600"
                 onChange={(e) => {
-                  setFotoKtm(e.target.files[0]);
+                  handleEditDataChange("id_jurusan", e.target.files[0]);
                 }}
                 accept="image/*"
               />

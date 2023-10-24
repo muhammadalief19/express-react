@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Mahasiswa from "../pages/Mahasiswa";
 import Jurusan from "../pages/Jurusan";
 import CreateMahasiswa from "../pages/CreateMahasiswa";
+import UpdateMahasiswa from "../pages/UpdateMahasiswa";
 export default function Routing() {
   return (
     <>
@@ -29,6 +30,7 @@ export default function Routing() {
           <Route path="/mhs" element={<Mahasiswa />} />
           <Route path="/jurusan" element={<Jurusan />} />
           <Route path="/mhs/create" element={<CreateMahasiswa />} />
+          <Route path="/mhs/:id" element={<UpdateMahasiswa />} />
         </Routes>
       </Router>
     </>
