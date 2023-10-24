@@ -3,6 +3,8 @@ import Mahasiswa from "../pages/Mahasiswa";
 import Jurusan from "../pages/Jurusan";
 import CreateMahasiswa from "../pages/CreateMahasiswa";
 import UpdateMahasiswa from "../pages/UpdateMahasiswa";
+import CreateJurusan from "../pages/CreateJurusan";
+import UpdateJurusan from "../pages/UpdateJurusan";
 export default function Routing() {
   return (
     <>
@@ -28,9 +30,11 @@ export default function Routing() {
         </div>
         <Routes>
           <Route path="/mhs" element={<Mahasiswa />} />
-          <Route path="/jurusan" element={<Jurusan />} />
           <Route path="/mhs/create" element={<CreateMahasiswa />} />
           <Route path="/mhs/:id" element={<UpdateMahasiswa />} />
+          <Route path="/jurusan" element={<Jurusan />} />
+          <Route path="/jurusan/create" element={<CreateJurusan />} />
+          <Route path="/jurusan/:id" element={<UpdateJurusan />} />
         </Routes>
       </Router>
     </>
