@@ -15,6 +15,18 @@ function Mahasiswa() {
     }
   };
 
+  const deleteData = async (id) => {
+    try {
+      const deletedData = await axios.delete(
+        `http://127.0.0.1:1908/api/mhs/delete/${id}`
+      );
+      console.log(deletedData.data);
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -76,7 +88,14 @@ function Mahasiswa() {
                         >
                           Update
                         </Link>
-                        <button className="btn btn-error">Delete</button>
+                        <button
+                          className="btn btn-error"
+                          onClick={() => {
+                            deleteData(mh.id_mahasiswa);
+                          }}
+                        >
+                          Delete
+                        </button>
                       </div>
                     </td>
                   </tr>
