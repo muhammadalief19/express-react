@@ -161,7 +161,7 @@ export default function UpdateMahasiswa() {
                     file:bg-red-500 file:text-white
                     hover:file:bg-red-600"
                 onChange={(e) => {
-                  handleEditDataChange("id_jurusan", e.target.files[0]);
+                  handleEditDataChange("foto_ktm", e.target.files[0]);
                 }}
                 accept="image/*"
               />
