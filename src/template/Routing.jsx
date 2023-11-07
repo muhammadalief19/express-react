@@ -5,7 +5,17 @@ import CreateMahasiswa from "../pages/CreateMahasiswa";
 import UpdateMahasiswa from "../pages/UpdateMahasiswa";
 import CreateJurusan from "../pages/CreateJurusan";
 import UpdateJurusan from "../pages/UpdateJurusan";
+import { Login } from "../pages/auth/Login";
+import { Register } from "../pages/auth/Register";
 export default function Routing() {
+  const token = localStorage.getItem("token");
+  const isLoggedIn = !!token;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    console.log("Logout berhasil !");
+    window.location.reload();
+  };
   return (
     <>
       <Router>
@@ -24,6 +34,15 @@ export default function Routing() {
                 <li className="">
                   <Link to={"/jurusan"}>Jurusan</Link>
                 </li>
+                {isLoggedIn ? (
+                  <li className="">
+                    <Link onClick={handleLogout}>Logout</Link>
+                  </li>
+                ) : (
+                  <li className="">
+                    <Link to={"/login"}>Login</Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -35,6 +54,8 @@ export default function Routing() {
           <Route path="/jurusan" element={<Jurusan />} />
           <Route path="/jurusan/create" element={<CreateJurusan />} />
           <Route path="/jurusan/:id" element={<UpdateJurusan />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
     </>
